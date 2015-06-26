@@ -6,14 +6,14 @@ import marfeelizable.data.model.CrawlerRecord;
 import marfeelizable.data.repository.CrawlerRecordRepository;
 import marfeelizable.page.PageParser;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CrawlerThread implements Runnable {
 
-	private Logger logger = LoggerFactory.getLogger(CrawlerThread.class);
+	private Log logger = LogFactory.getLog(CrawlerThread.class);
 	@Autowired
 	private Crawler crawler;
 	private String url;

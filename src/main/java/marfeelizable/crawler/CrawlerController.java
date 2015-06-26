@@ -5,17 +5,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import marfeelizable.spring.config.ApplicationConfig;
 import marfeelizable.spring.config.DbConfig;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class CrawlerController {
 
-
-
+	private Log logger = LogFactory.getLog(CrawlerController.class);
 	public static void main(String[] args) {
 
 		CrawlerController controller = new CrawlerController();
@@ -23,6 +22,8 @@ public class CrawlerController {
 	}
 
 	private void run() {
+		logger.info("!!!!!!!!!!!!!!!!!!!dupa!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("syf");
 		ApplicationContext context = new AnnotationConfigApplicationContext(
 				DbConfig.class);
 		//crawler = (Crawler) context.getBean("crawler");

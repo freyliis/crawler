@@ -18,45 +18,45 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@EnableJpaRepositories
-@EnableTransactionManagement
+//@EnableJpaRepositories
+//@EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 @Import({ApplicationConfig.class})
 public class DbConfig {
 	
-	@Bean
-	public DataSource dataSource(Environment env) {
-
-		HikariConfig dataSourceConfig = new HikariConfig();
-		dataSourceConfig.setDriverClassName(env
-				.getRequiredProperty("db.driver"));
-		dataSourceConfig.setJdbcUrl(env.getRequiredProperty("db.url"));
-		dataSourceConfig.setUsername(env.getRequiredProperty("db.username"));
-		dataSourceConfig.setPassword(env.getRequiredProperty("db.password"));
-		return new HikariDataSource(dataSourceConfig);
-	}
-
-	@Bean
-	JpaTransactionManager transactionManager(
-			EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory);
-		return transactionManager;
-	}
-
-	@Bean
-	public EntityManagerFactory entityManagerFactory(Environment env) {
-
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setGenerateDdl(true);
-
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("marfeelizable.data");
-		factory.setDataSource(dataSource(env));
-		factory.afterPropertiesSet();
-
-		return factory.getObject();
-	}
+//	@Bean
+//	public DataSource dataSource(Environment env) {
+//
+//		HikariConfig dataSourceConfig = new HikariConfig();
+//		dataSourceConfig.setDriverClassName(env
+//				.getRequiredProperty("db.driver"));
+//		dataSourceConfig.setJdbcUrl(env.getRequiredProperty("db.url"));
+//		dataSourceConfig.setUsername(env.getRequiredProperty("db.username"));
+//		dataSourceConfig.setPassword(env.getRequiredProperty("db.password"));
+//		return new HikariDataSource(dataSourceConfig);
+//	}
+//
+//	@Bean
+//	JpaTransactionManager transactionManager(
+//			EntityManagerFactory entityManagerFactory) {
+//		JpaTransactionManager transactionManager = new JpaTransactionManager();
+//		transactionManager.setEntityManagerFactory(entityManagerFactory);
+//		return transactionManager;
+//	}
+//
+//	@Bean
+//	public EntityManagerFactory entityManagerFactory(Environment env) {
+//
+//		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//		vendorAdapter.setGenerateDdl(true);
+//
+//		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+//		factory.setJpaVendorAdapter(vendorAdapter);
+//		factory.setPackagesToScan("marfeelizable.data");
+//		factory.setDataSource(dataSource(env));
+//		factory.afterPropertiesSet();
+//
+//		return factory.getObject();
+//	}
 
 }
