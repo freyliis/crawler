@@ -28,16 +28,9 @@ public class CrawlerRecord {
 		return isMarfeelizableResult;
 	}
 
-	public CrawlerRecord() {
+	@SuppressWarnings("unused")
+	private CrawlerRecord() {
 		super();
-	}
-
-	public void setPageUrl(String pageUrl) {
-		this.pageUrl = pageUrl;
-	}
-
-	public void setIsMarfeelizableResult(Boolean isMarfeelizableResult) {
-		this.isMarfeelizableResult = isMarfeelizableResult;
 	}
 
 }

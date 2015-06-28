@@ -1,9 +1,6 @@
-package marfeelizable.data.model;
+package marfeelizable.data.dto;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,11 +19,6 @@ public class PageDTO implements Serializable {
 
 	public String getUrl() {
 		return url;
-	}
-
-	public String getParsedUrl() throws URISyntaxException, MalformedURLException {
-		final URI uri = new URI("http", url, null, null);
-		return uri.toURL().toString();
 	}
 
 	public void setUrl(String url) {

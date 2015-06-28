@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +27,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import marfeelizable.crawler.CrawlerControllerTest.TestConfiguration;
-import marfeelizable.data.model.PageDTO;
+import marfeelizable.crawler.thread.CrawlerThreadPool;
+import marfeelizable.data.dto.PageDTO;
 import marfeelizable.data.repository.CrawlerRecordRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,13 +48,16 @@ public class CrawlerControllerTest {
 	@Before
 	public void setUp() throws IOException {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
-		final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pages.json");
-		pages = mapper.readValue(resourceAsStream, PageDTO[].class);
 	}
 
 	@Configuration
 	@EnableWebMvc
 	public static class TestConfiguration {
+
+		@Bean
+		public CrawlerThreadPool crawlerThreadPool() {
+			return new CrawlerThreadPool(5, 10, 5000);
+		}
 
 		@Bean
 		public Crawler crawler() {
@@ -68,7 +73,7 @@ public class CrawlerControllerTest {
 		public CrawlerService crawlerService() {
 			return new CrawlerService() {
 				@Override
-				public void processPages(List<PageDTO> pages) {
+				public void processPages(List<URL> pages) {
 				}
 			};
 		}
@@ -81,10 +86,24 @@ public class CrawlerControllerTest {
 	}
 
 	@Test
-	public void crawlerTest() throws Exception {
+	public void crawlerTestResponseOk() throws Exception {
+		final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pages.json");
+		pages = mapper.readValue(resourceAsStream, PageDTO[].class);
+
 		mockMvc.perform(post("/pages").accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(Arrays.asList(pages))))
 				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+
+	@Test
+	public void crawlerTestWrongUrl() throws Exception {
+
+		final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pagesMalformed.json");
+		pages = mapper.readValue(resourceAsStream, PageDTO[].class);
+
+		mockMvc.perform(post("/pages").accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(Arrays.asList(pages))))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 }

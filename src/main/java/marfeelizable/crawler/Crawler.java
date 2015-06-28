@@ -1,15 +1,15 @@
 package marfeelizable.crawler;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Crawler {
 
-	private List<String> marfeelizableWords = new ArrayList<String>();
+	private List<String> marfeelizableWords;
 
 	public Crawler(List<String> marfeelizableWords) {
 		super();
-		this.marfeelizableWords = marfeelizableWords;
+		this.marfeelizableWords = Collections.unmodifiableList(marfeelizableWords);
 	}
 
 	public Boolean isMarfeelizable(String string) {
