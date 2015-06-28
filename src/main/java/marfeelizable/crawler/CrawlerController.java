@@ -1,34 +1,25 @@
 package marfeelizable.crawler;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import marfeelizable.data.repository.CrawlerRecordRepository;
-
-@Component
+@Controller
 public class CrawlerController {
 
 	@Autowired
-	private CrawlerRecordRepository crawlerRecordRepository;
-	@Autowired
-	private Crawler crawler;
+	CrawlerService crawlerService;
 
-	public void run() {
-
-		final int corePoolSize = 5;
-		final int maxPoolSize = 10;
-		final long keepAliveTime = 5000;
-
-		final ExecutorService threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
-				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-
-		threadPoolExecutor.execute(new CrawlerThread("http://www.c-and-a.com/", crawler, crawlerRecordRepository));
-		threadPoolExecutor.shutdown();
+	@RequestMapping(value = "/pages", method = RequestMethod.POST, headers = { "Accept=application/json" }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@ResponseBody
+	public void postPages(@RequestBody List<Page> pages) {
+		System.out.println(pages);
 	}
-
 }
