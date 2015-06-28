@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 public class PageParser {
 
-	private Logger logger = LoggerFactory.getLogger(PageParser.class);
-	private Document document;
+	private static final Logger logger = LoggerFactory.getLogger(PageParser.class);
+	private final Document document;
 
 	public PageParser(Document document) {
 		this.document = document;
 	}
 
 	public String getPageTitle() {
-		Element title = document.getElementsByTag("title").first();
+		final Element title = document.getElementsByTag("title").first();
 		if (title != null) {
 			return title.text();
 		} else {

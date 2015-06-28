@@ -1,0 +1,5 @@
+Crawler application
+1. To build: mvn compile
+2. To run: mvn jetty:run
+Crawler results are automatically saved in h2 in file database in project directory. Configuration for h2 database is in src/main/rescources/application.properties
+REST method is exposed on http://localhost:8080/marfeelizable/pages as POST.
