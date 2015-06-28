@@ -27,7 +27,7 @@ public class DbConfig {
 	@Bean
 	public DataSource dataSource(Environment env) {
 
-		HikariConfig dataSourceConfig = new HikariConfig();
+		final HikariConfig dataSourceConfig = new HikariConfig();
 		dataSourceConfig.setDriverClassName(env.getRequiredProperty("db.driver"));
 		dataSourceConfig.setJdbcUrl(env.getRequiredProperty("db.url"));
 		dataSourceConfig.setUsername(env.getRequiredProperty("db.username"));
@@ -37,7 +37,7 @@ public class DbConfig {
 
 	@Bean
 	JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		final JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory);
 		return transactionManager;
 	}
@@ -45,10 +45,10 @@ public class DbConfig {
 	@Bean
 	public EntityManagerFactory entityManagerFactory(Environment env) {
 
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		vendorAdapter.setGenerateDdl(true);
 
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+		final LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan("marfeelizable.data");
 		factory.setDataSource(dataSource(env));

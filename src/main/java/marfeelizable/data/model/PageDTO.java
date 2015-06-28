@@ -1,10 +1,13 @@
-package marfeelizable.crawler;
+package marfeelizable.data.model;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Page implements Serializable {
+public class PageDTO implements Serializable {
 
 	/**
 	 *
@@ -21,6 +24,11 @@ public class Page implements Serializable {
 		return url;
 	}
 
+	public String getParsedUrl() throws URISyntaxException, MalformedURLException {
+		final URI uri = new URI("http", url, null, null);
+		return uri.toURL().toString();
+	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -33,7 +41,7 @@ public class Page implements Serializable {
 		this.rank = rank;
 	}
 
-	public Page() {
+	public PageDTO() {
 		super();
 	}
 

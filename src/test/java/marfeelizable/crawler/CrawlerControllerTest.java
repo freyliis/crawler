@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import marfeelizable.crawler.CrawlerControllerTest.TestConfiguration;
+import marfeelizable.data.model.PageDTO;
 import marfeelizable.data.repository.CrawlerRecordRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,7 +39,7 @@ public class CrawlerControllerTest {
 
 	private MockMvc mockMvc;
 
-	Page[] pages;
+	PageDTO[] pages;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -46,7 +47,7 @@ public class CrawlerControllerTest {
 	public void setUp() throws IOException {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 		final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pages.json");
-		pages = mapper.readValue(resourceAsStream, Page[].class);
+		pages = mapper.readValue(resourceAsStream, PageDTO[].class);
 	}
 
 	@Configuration
@@ -65,7 +66,11 @@ public class CrawlerControllerTest {
 
 		@Bean
 		public CrawlerService crawlerService() {
-			return new CrawlerService();
+			return new CrawlerService() {
+				@Override
+				public void processPages(List<PageDTO> pages) {
+				}
+			};
 		}
 
 		@Bean
@@ -78,7 +83,7 @@ public class CrawlerControllerTest {
 	@Test
 	public void crawlerTest() throws Exception {
 		mockMvc.perform(post("/pages").accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsString(Arrays.asList(pages)))).andDo(MockMvcResultHandlers.print())
+				.content(mapper.writeValueAsString(Arrays.asList(pages))))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
